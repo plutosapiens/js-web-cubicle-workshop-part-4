@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const cubeService = require("../services/cubeService")
 const accessoryService = require('../services/accessoryService');
-const { difficultyLevelOptionsViewData } = require('../util/viewData');
+const { difficultyLevelOptionsViewData } = require('../utils/viewData');
 
 router.get("/create", (req, res) => {
     res.render("cube/create");
