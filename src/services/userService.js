@@ -24,7 +24,6 @@ exports.login = async (username, password) => {
         _id: user._id,
         username: user.username,
     };
-    console.log({payload})
     const token = await jwt.sign(payload, SECRET, {expiresIn: '3d'});
 
     return token;
