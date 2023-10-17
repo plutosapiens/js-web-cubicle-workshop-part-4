@@ -1,25 +1,21 @@
 const router = require("express").Router();
 const userService = require('../services/userService');
+const { extractErrorMsgs } = require('../utils/errorHandle');
 
 router.get("/register", (req, res) => {
     res.render("user/register");
 });
 
-router.post("/register", async (req, res, next) => {
-    const { username, password, repeatPassword } = req.body;
-  
-    if (password !== repeatPassword) {
-      const error = new Error("Passwords do not match!");
-      error.statusCode = 400;
-      return next(error);
+router.post("/register", async (req, res) => {
+  const { username, password, repeatPassword } = req.body;
+
+  try{
+    await userService.register({ username, password, repeatPassword });
+    res.redirect('/users/login');
+  }catch(err){
+    const errorMessages = extractErrorMsgs(err);
+    res.status(404).render("user/register", { errorMessages })
   }
-  
-    try {
-      await userService.register({username, password, repeatPassword});
-      res.redirect("/users/login");
-    } catch(error){
-      next(error);
-    }
 });
 
 router.get("/login", (req, res) => {
